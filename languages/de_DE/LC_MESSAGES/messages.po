@@ -1,0 +1,176 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: c5_rss_blog\n"
+"POT-Creation-Date: 2016-01-14 09:56+0100\n"
+"PO-Revision-Date: 2016-01-14 09:57+0100\n"
+"Last-Translator: Daniel Gasser <software@daniel-gasser.com>\n"
+"Language-Team: toesslab - websolutions <software@toesslab.ch>\n"
+"Language: german\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: t:1c,2;gettext;gettext_noop;t;t:1;t2:1,2;tc:1c,2;"
+"tc:2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: /var/www/html/c57/packages/toess_lab_rss_blog\n"
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:34
+msgid "Adds RSS feeds as blog entry."
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:39
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:190
+msgid "toesslab - RSS Blog"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:48
+msgid "Topics for Rss Blog"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:61
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:62
+msgid "Right Sidebar"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:66
+msgid "Blog Entry"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:172
+msgid "Indexing complete. Index is up to date"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:175
+#, php-format
+msgid ""
+"Index partially updated. %s pages indexed (maximum number.) Re-run this job "
+"to continue this process."
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:179
+msgid "Index updated."
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:180
+#, php-format
+msgid "%d page required reindexing."
+msgid_plural "%d pages required reindexing."
+msgstr[0] ""
+msgstr[1] ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controller.php:191
+msgid "RSS Blog Settings"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/src/Concrete/Help/HelpServiceProvider.php:17
+msgid "HELP"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog.php:61
+#: /var/www/html/c57/packages/toess_lab_rss_blog/jobs/get_new_pages.php:32
+msgid "Get new Pages"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog.php:62
+msgid "Delete all Pages!"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog.php:66
+msgid "Page is active/trashed"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog.php:69
+msgid "Page link"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog.php:72
+msgid "Date added"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog.php:75
+msgid "Delete page"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog.php:86
+msgid "Active"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog.php:95
+msgid "Delete!"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog/settings.php:25
+msgid "Feed Url"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog/settings.php:29
+msgid "Select Parent Page"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog/settings.php:40
+msgid "Select Page Type for Blog entries"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog/settings.php:45
+msgid "Select a Thumbnail Type for Images Blog entries"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog/settings.php:50
+msgid "Add HTML (optional)"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog/settings.php:54
+msgid "Will be added below the Blog text"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/single_pages/dashboard/rss_blog/settings.php:58
+msgid "Save settings"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controllers/single_page/dashboard/rss_blog.php:45
+#: /var/www/html/c57/packages/toess_lab_rss_blog/jobs/get_new_pages.php:43
+#, php-format
+msgid "Please adapt <a href=\"%s\">Settings</a> first."
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controllers/single_page/dashboard/rss_blog.php:53
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controllers/single_page/dashboard/rss_blog/settings.php:44
+msgid "Invalid URL"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controllers/single_page/dashboard/rss_blog.php:146
+msgid "No Pages available. Click \"Get new Pages\""
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controllers/single_page/dashboard/rss_blog.php:149
+#: /var/www/html/c57/packages/toess_lab_rss_blog/jobs/get_new_pages.php:103
+#, php-format
+msgid "%s new Pages added"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controllers/single_page/dashboard/rss_blog.php:214
+#, php-format
+msgid "The Page '%s' has been moved to the trash."
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controllers/single_page/dashboard/rss_blog/settings.php:21
+msgid "No Topic Trees found. Please create one first."
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controllers/single_page/dashboard/rss_blog/settings.php:40
+msgid "Provide an URL"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controllers/single_page/dashboard/rss_blog/settings.php:47
+msgid "Provide a Parent Page"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/controllers/single_page/dashboard/rss_blog/settings.php:62
+msgid "Settings have been saved"
+msgstr ""
+
+#: /var/www/html/c57/packages/toess_lab_rss_blog/jobs/get_new_pages.php:37
+msgid "Refreshes Feeds provided by Toesslab RSS Blog"
+msgstr ""

@@ -1,0 +1,14 @@
+[class^="toesslab-rss-blog-category-"] {
+  float: left;
+  margin: 0 3px;
+  padding: 1px 9px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 12px;
+}
+.toesslab-page-title-container {
+  clear: both;
+}
+.toesslab-page-author {
+  float: left;
+}
