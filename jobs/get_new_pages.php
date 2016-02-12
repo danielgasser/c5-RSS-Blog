@@ -89,15 +89,6 @@ class GetNewPages extends AbstractJob
             $collection_handle = $page_prefix . preg_replace('/[^A-Za-z0-9\_]/', '', $title);
             if(!RssBlog::pagesExist($collection_handle)) {
 
-                // Create page
-                $entry = $blog->add($type, array(
-                    'cName' => $value['title'],
-                    'cDescription' => $value['short_description'],
-                    'cHandle' => $collection_handle,
-                    'cvIsApproved' => true,
-                    'cDatePublic' => $value['published']->format('Y-m-d H:i:s')
-                ), $pageTemplate);
-
                 // Create categories/topics
                 $itemsToActivate = array();
                 $cat_block = '<div class="toesslab-rss-blog-categories-block">';
@@ -108,10 +99,30 @@ class GetNewPages extends AbstractJob
                     } else {
                         $item_topic = TopicTreeNode::getNodeByName($r['treeNodeTopicName']);
                     }
+                    $catPage = Page\Page::getByPath(ltrim($item_topic->getTreeNodeDisplayPath(), '/'));
+                    if($catPage->cID == NULL){
+                        $catPage = $blog->add('page', array(
+                            'cName' => ltrim($item_topic->getTreeNodeDisplayPath(), '/'),
+                            'cHandle' => ltrim($item_topic->getTreeNodeDisplayPath(), '/'),
+                            'cvIsApproved' => true,
+                            'cDatePublic' => $value['published']->format('Y-m-d H:i:s')
+                        ));
+                    }
+                    //dd($catPage);
                     $itemsToActivate[] = $item_topic->getTreeNodeDisplayPath();
                     $cat_block .= '<p class="toesslab-rss-blog-category-' . $key . '">' . $cat . '</p>';
                 }
                 $cat_block .= '</div>';
+
+                // Create page
+                $entry = $catPage->add($type, array(
+                    'cName' => $value['title'],
+                    'cDescription' => $value['short_description'],
+                    'cHandle' => $collection_handle,
+                    'cvIsApproved' => true,
+                    'cDatePublic' => $value['published']->format('Y-m-d H:i:s')
+                ), $pageTemplate);
+
                 $entry->setAttribute($akHandle, $itemsToActivate);
 
                 // Get images
