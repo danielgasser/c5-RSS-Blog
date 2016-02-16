@@ -89,6 +89,15 @@ class GetNewPages extends AbstractJob
             $collection_handle = $page_prefix . preg_replace('/[^A-Za-z0-9\_]/', '', $title);
             if(!RssBlog::pagesExist($collection_handle)) {
 
+                // Create page
+                $entry = $blog->add($type, array(
+                    'cName' => $value['title'],
+                    'cDescription' => $value['short_description'],
+                    'cHandle' => str_replace(' ', '-', $value['title']),
+                    'cvIsApproved' => true,
+                    'cDatePublic' => $value['published']->format('Y-m-d H:i:s')
+                ), $pageTemplate);
+                $db->query('insert into ToessLabRssBlogPages (cID, cHandle) values(?,?)', array($entry->cID, $collection_handle));
                 // Create categories/topics
                 $itemsToActivate = array();
                 $cat_block = '<div class="toesslab-rss-blog-categories-block">';
@@ -99,46 +108,37 @@ class GetNewPages extends AbstractJob
                     } else {
                         $item_topic = TopicTreeNode::getNodeByName($r['treeNodeTopicName']);
                     }
-                    $catPage = Page\Page::getByPath(ltrim($item_topic->getTreeNodeDisplayPath(), '/'));
-                    if($catPage->cID == NULL){
-                        $catPage = $blog->add('page', array(
-                            'cName' => ltrim($item_topic->getTreeNodeDisplayPath(), '/'),
-                            'cHandle' => ltrim($item_topic->getTreeNodeDisplayPath(), '/'),
-                            'cvIsApproved' => true,
-                            'cDatePublic' => $value['published']->format('Y-m-d H:i:s')
-                        ));
-                    }
-                    //dd($catPage);
                     $itemsToActivate[] = $item_topic->getTreeNodeDisplayPath();
                     $cat_block .= '<p class="toesslab-rss-blog-category-' . $key . '">' . $cat . '</p>';
                 }
                 $cat_block .= '</div>';
-
-                // Create page
-                $entry = $catPage->add($type, array(
-                    'cName' => $value['title'],
-                    'cDescription' => $value['short_description'],
-                    'cHandle' => $collection_handle,
-                    'cvIsApproved' => true,
-                    'cDatePublic' => $value['published']->format('Y-m-d H:i:s')
-                ), $pageTemplate);
-
                 $entry->setAttribute($akHandle, $itemsToActivate);
 
                 // Get images
+                $img_link = '';
+                $img_link .= '<!--[if IE 9]><video style=\'display: none;\'><![endif]-->';
                 if(sizeof($value['enclosure']) > 0){
                     $file = $value['enclosure']['url'];
                     $newFileName = basename($file);
                     $img = self::getImages($file, $newFileName, $defaultImage);
                     $entry->setAttribute('thumbnail', array('fID' => $img->getFileID()));
                     $il = \Concrete\Core\File\File::getRelativePathFromID($img->getFileID());
-                    $img_link = '<img title="' . $img->getTitle() . '" src="' . $il . '">';
+                    //$img_link .= '<source srcset="' . $il . '" media="(min-width: 1100px)">';
+                    //$img_link .= '<source srcset="' . $il . '" media="(min-width: 900px)">';
+                    //$img_link .= '<source srcset="' . $il . '" media="(min-width: 768px)">';
+                    //$img_link .= '<source srcset="' . $il . '">';
+                    $img_link .= '<img style="width: ' . \Config::get('toess_lab_rss_blog.settings.imgWidth') . '; height: ' . \Config::get('toess_lab_rss_blog.settings.imgHeight') . '" title="' . $img->getTitle() . '" alt="#" id="image-marker" src="' . $il . '">';
                 } else {
                     $img = File::getByID(\Config::get('toess_lab_rss_blog.settings.defaultImage'));
                     $entry->setAttribute('thumbnail', array('fID' => $img->getFileID()));
                     $il = \Concrete\Core\File\File::getRelativePathFromID($img->getFileID());
-                    $img_link = '<img title="' . $img->getTitle() . '" src="' . $il . '">';
+                    //$img_link .= '<source srcset="' . $il . '" media="(min-width: 1100px)">';
+                    //$img_link .= '<source srcset="' . $il . '" media="(min-width: 900px)">';
+                    //$img_link .= '<source srcset="' . $il . '" media="(min-width: 768px)">';
+                    //$img_link .= '<source srcset="' . $il . '">';
+                    $img_link .= '<img style="width: ' . \Config::get('toess_lab_rss_blog.settings.imgWidth') . '; height: ' . \Config::get('toess_lab_rss_blog.settings.imgHeight') . '" title="' . $img->getTitle() . '" alt="#" id="image-marker" src="' . $il . '">';
                 }
+                $img_link .= '';
 
                 // Create content
                 $author = self::getAuthorsName($value['description']);
@@ -149,7 +149,8 @@ class GetNewPages extends AbstractJob
                 $bt_html = BlockType::getByHandle('html');
                 $ax = Area::getOrCreate($entry, 'Main');
                 $title_block = $entry->addBlock($bt_content, $ax, array('content' => $title_content));
-                $block_content = $entry->addBlock($bt_content, $ax, array('content' => '<p class="toesslab-rss-blog-image">' . $img_link . '</p><div class="toesslab-rss-blog-description">' . $value['description'] . '</div>'));
+                $block_content = $entry->addBlock($bt_content, $ax, array('content' => '<p class="toesslab-rss-blog-image">' . $img_link . '</p><p class="toesslab-page-author">' . t('Af') . ' ' . $author . ' - Foto: Polfoto</p><div class="toesslab-rss-blog-description">' . $value['description'] . '</div>'));
+
                 if(strlen($htmlBlockContent) > 0){
                     $html_block = $entry->addBlock($bt_html, $ax, array('content' => $htmlBlockContent));
                     $html_block->setCustomTemplate($template);
@@ -174,8 +175,10 @@ class GetNewPages extends AbstractJob
                 $im = imagecreatefromstring($img);
                 $width = imagesx($im);
                 $height = imagesy($im);
-                $newwidth = \Config::get('toess_lab_rss_blog.settings.imgWidth');
-                $newheight = \Config::get('toess_lab_rss_blog.settings.imgHeight');
+                $defaultWidth = intval($width / 4);
+                $defaultHeight = intval($height / 4);
+                $newwidth = $defaultWidth;
+                $newheight = $defaultHeight;
                 $thumb = imagecreatetruecolor($newwidth, $newheight);
                 imagecopyresized($thumb, $im, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
                 imagejpeg($thumb, $newFile); //save image as jpg
@@ -213,9 +216,9 @@ class GetNewPages extends AbstractJob
         $content .= '<div class="toesslab-page-title-container">';
         $content .= '<h1 class="toesslab-page-title">' . $title . '</h1>';
         $content .= '<p class="toesslab-page-profile-link">';
-        $content .= t('Af').' <span class=""><i class="fa fa-user"></i> <b>' . $profileLink . '</b></span> ';
-        $content .= t('kl').' <span class=""><i class="fa fa-clock-o"></i> ' . $dh->formatTime($published->getTimeStamp()) . '</span> ';
-        $content .= t('den').' <span class=""><i class="fa fa-calendar"></i> ' . $published->format('d. M. Y') . '</span>';
+        $content .= t('Af') . ' <span class=""><i class="fa fa-user"></i> <b>' . $profileLink . '</b></span> ';
+        $content .= t('kl') . ' <span class=""><i class="fa fa-clock-o"></i> ' . $dh->formatTime($published->getTimeStamp()) . '</span> ';
+        $content .= t('den') . ' <span class=""><i class="fa fa-calendar"></i> ' . $published->format('d. M. Y') . '</span>';
         $content .= '</p>';
         $content .= '<div>';
         $content .= '<p>' . t('Del:');
@@ -225,16 +228,13 @@ class GetNewPages extends AbstractJob
         $content .= '<a href="https://twitter.com/share">';
         $content .= '<i class="fa fa-twitter fa-border fa-lg"></i>';
         $content .= '</a>';
-        $content .= '<a href="http://www.facebook.com/share.php?u=' . $pageLink . '">';
+        //$content .= '<div class="fb-share-button" data-href="' . $pageLink . '" data-layout="icon">';
+        $content .= '<a href="http://www.facebook.com/share.php?u=' .  mb_strtolower($pageLink) . '">';
         $content .= '<i class="fa fa-facebook fa-border fa-lg"></i>';
         $content .= '</a>';
         $content .= '</p>';
         $content .= '</div>';
         $content .= '</div>';
-        $content .= '<p class="toesslab-page-author">';
-        // ToDo
-        //$content .= $author;
-        $content .= '</p>';
         $content .= '</div>';
         return $content;
     }
@@ -246,5 +246,12 @@ class GetNewPages extends AbstractJob
         $b = str_replace('</p>', '', $a);
         $c = str_replace('/', ' ', $b);
         return ucfirst(ltrim($c));
+    }
+
+    private function popLastParagraphTag($description)
+    {
+        $d = explode('<p>', $description);
+        $a = array_pop($d);
+        return implode('<p>', $d);
     }
 }

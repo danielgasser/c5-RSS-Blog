@@ -55,7 +55,7 @@ class Settings extends DashboardPageController
         if(intval($this->post('defaultImage')) == 0) {
             $this->error->add(t('Provide a default image'));
         }
-        if(intval($this->post('deleteAfter')) == 0) {
+        if(intval($this->post('deleteAfter')) <= 0) {
             $this->error->add(t('Set the number of days after which pages will be deleted'));
         }
         if($this->error->has()) {
@@ -66,14 +66,12 @@ class Settings extends DashboardPageController
             \Config::save('toess_lab_rss_blog.htmlBlock', $this->post('htmlBlock'));
         }
         $session = \Core::make('session');
-        $imgWidth = intval($this->post('imgWidth'));
-        $imgHeight = intval($this->post('imgHeight'));
         \Config::save('toess_lab_rss_blog.settings.feedUrl', $this->post('feedUrl'));
         \Config::save('toess_lab_rss_blog.settings.parentPage', intval($this->post('pageID')));
         \Config::save('toess_lab_rss_blog.settings.pageType', $this->post('pageType'));
         \Config::save('toess_lab_rss_blog.settings.thumbnailType', $this->post('thumbnailType'));
-        \Config::save('toess_lab_rss_blog.settings.imgWidth', ($imgWidth <= 0) ? 696 : $imgWidth);
-        \Config::save('toess_lab_rss_blog.settings.imgHeight', ($imgHeight <= 0) ? 464 : $imgHeight);
+        \Config::save('toess_lab_rss_blog.settings.imgWidth', (strlen($this->post('imgWidth')) > 0) ? $this->post('imgWidth') : 'auto');
+        \Config::save('toess_lab_rss_blog.settings.imgHeight', (strlen($this->post('imgHeight')) > 0) ? $this->post('imgHeight') : 'auto');
         \Config::save('toess_lab_rss_blog.settings.deleteAfter', intval($this->post('deleteAfter')));
         \Config::save('toess_lab_rss_blog.settings.defaultImage', intval($this->post('defaultImage')));
         \Config::save('toess_lab_rss_blog.settings.userAuthor', $this->post('userID'));

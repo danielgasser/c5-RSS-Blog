@@ -44,6 +44,7 @@ class DeleteOldPages extends AbstractJob
         if (intval(\Config::get('toess_lab_rss_blog.settings.deleteAfter')) == 0) {
             //return t('Please adapt <a href="%s">Settings</a> first.', \URL::to('/dashboard/rss_blog/settings'));
         }
+        $db = Loader::db();
         $days = \Config::get('toess_lab_rss_blog.settings.deleteAfter');
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
@@ -57,6 +58,7 @@ class DeleteOldPages extends AbstractJob
                 $p = Page\Page::getByID($page['id']);
                 if(is_object($p)){
                     $p->delete();
+                    $p = $db->execute('delete from ToessLabRssBlogPages where cID = ?', array($page['id']));
                     $pagesDeleted++;
                 }
             }

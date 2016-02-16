@@ -44,7 +44,7 @@ class RssBlog extends DashboardPageController
     {
         $data = array();
         $db = Loader::db();
-        $p = $db->execute('select * from Collections where cHandle like ? order by cHandle asc', array(Controller::$pagePrefix . '%'));
+        $p = $db->execute('select * from ToessLabRssBlogPages where cHandle like ? order by cHandle asc', array(Controller::$pagePrefix . '%'));
         if(sizeof($p) == 0) {
             return true;
         } else {
@@ -70,7 +70,7 @@ class RssBlog extends DashboardPageController
     public static function pagesExist($arg)
     {
         $db = Loader::db();
-        $p = $db->execute('select cID, cHandle from Collections where cHandle = ?', array($arg));
+        $p = $db->execute('select cID, cHandle from ToessLabRssBlogPages where cHandle = ?', array($arg));
         if($p->rowCount() == 0) {
             return false;
         }

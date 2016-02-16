@@ -95,18 +95,16 @@ $u = Core::make('helper/form/user_selector');
                         <div class="input-group">
                             <span class="input-group-addon"><?php print t('Width') ?></span>
                             <?php
-                            print $form->number('imgWidth', $imgWidth);
+                            print $form->text('imgWidth', $imgWidth);
                             ?>
-                            <span class="input-group-addon"><?php print t('Pixels') ?></span>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="input-group">
                             <span class="input-group-addon"><?php print t('Height') ?></span>
                             <?php
-                            print $form->number('imgHeight', $imgHeight);
+                            print $form->text('imgHeight', $imgHeight);
                             ?>
-                            <span class="input-group-addon"><?php print t('Pixels') ?></span>
                         </div>
                     </div>
 
